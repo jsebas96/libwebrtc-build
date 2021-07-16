@@ -30,6 +30,7 @@ if (NOT HAS_OWN_DEPOT_TOOLS)
     set(GCLIENT_EXECUTABLE ${CMAKE_BINARY_DIR}/depot_tools/src/depot-tools/gclient.bat)
   else (WIN32)
     set(GCLIENT_EXECUTABLE ${CMAKE_BINARY_DIR}/depot_tools/src/depot-tools/gclient)
+    set(FETCH_EXECUTABLE ${CMAKE_BINARY_DIR}/depot_tools/src/depot-tools/fetch)
   endif (WIN32)
 
   ExternalProject_Add(
@@ -55,6 +56,7 @@ set(_WEBRTC_CMAKE_ARGS
     -DCMAKE_MODULE_PATH:PATH=${CMAKE_MODULE_PATH}
     -DDEPOT_TOOLS_PATH:PATH=${DEPOT_TOOLS_PATH}
     -DGCLIENT_EXECUTABLE:PATH=${GCLIENT_EXECUTABLE}
+    -DFETCH_EXECUTABLE:PATH=${FETCH_EXECUTABLE}
     -DHAS_OWN_DEPOT_TOOLS:PATH=${HAS_OWN_DEPOT_TOOLS}
     -DTARGET_CPU=${TARGET_CPU}
     -DTARGET_OS=${TARGET_OS}
@@ -72,7 +74,7 @@ ExternalProject_Add(
     webrtc-src
 
     DEPENDS ${_NEXT_DEPENDS}
-    GIT_REPOSITORY https://chromium.googlesource.com/external/webrtc
+    DOWNLOAD_COMMAND  ${FETCH_EXECUTABLE} --nohooks webrtc # TODO: Need to fix - this clones in webrtc/src/src
 
     PREFIX ${CMAKE_BINARY_DIR}/webrtc
     BINARY_DIR ${CMAKE_BINARY_DIR}/webrtc/build
