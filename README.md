@@ -1,5 +1,12 @@
 # libwebrtc [![License][license-img]][license-href] [![Join the chat at https://gitter.im/aisouard/libwebrtc][gitter-img]][gitter-href] [![Build Status][travis-img]][travis-href] [![Build Status][appveyor-img]][appveyor-href]
 
+## Note:
+
+Changes in this fork include support for the newer version of WebRTC (m84).
+Instructions are from: https://mediasoup.org/documentation/v3/libmediasoupclient/installation/
+The changes help in building the webRTC library as a Conan package.
+X11 dependency is removed - since it is not really required for my usecase.
+
 This repository contains a collection of CMake scripts to help you embed
 Google's native WebRTC implementation inside your project as simple as this:
 
