@@ -25,7 +25,7 @@ if (WEBRTC_REVISION)
 elseif (WEBRTC_BRANCH_HEAD)
   libwebrtc_execute(
       NAME webrtc-sync
-      COMMAND ${GCLIENT_EXECUTABLE} sync --force
+      COMMAND ${GCLIENT_EXECUTABLE} sync --force -D
       WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
       COMMENT "Synchronizing WebRTC"
       STATUS "Synchronizing WebRTC in ${CMAKE_SOURCE_DIR}"
@@ -45,7 +45,7 @@ include(LibWebRTCCommand)
 
 libwebrtc_command(
   NAME webrtc-sync
-  COMMAND ${GCLIENT_EXECUTABLE} sync --force
+  COMMAND ${GCLIENT_EXECUTABLE} sync --force -D
   WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
   COMMENT "Synchronizing WebRTC"
   STATUS "Synchronizing WebRTC in ${CMAKE_SOURCE_DIR}"
@@ -90,14 +90,31 @@ elseif (WIN32)
   set(_SCRIPT_SUFFIX .bat)
 endif (UNIX AND NOT APPLE)
 
+#set(_GN_COMMAND download_from_google_storage${_SCRIPT_SUFFIX} --no_resume --platform=${_PLATFORM}
+#    --no_auth --bucket chromium-gn
+#    -s src/buildtools/${_FOLDER}/gn${_SUFFIX}.sha1)
+
+
 include(Gn)
+
+#libwebrtc_command(
+#    NAME webrtc-gn
+#    COMMAND ${_GN_COMMAND}
+#    WORKING_DIRECTORY "${WEBRTC_PARENT_DIR}"
+#    COMMENT "Fetching gn${_SUFFIX} for ${_PLATFORM}, with ${_GN_COMMAND}"
+#    STATUS "Fetching gn${_SUFFIX} for ${_PLATFORM}, with ${_GN_COMMAND}"
+#    DEPENDS webrtc-sync
+#)
+#set(_DEPENDENCIES ${_DEPENDENCIES} webrtc-gn)
+
+#set(_GEN_COMMAND ${_GN_EXECUTABLE} gen ${_NINJA_BUILD_DIR} --args="is_debug=false is_component_build=false is_clang=false rtc_enable_protobuf=false rtc_build_ssl=true rtc_include_tests=false rtc_use_h264=true use_rtti=true use_custom_libcxx=true treat_warnings_as_errors=false use_ozone=true rtc_ssl_root=\"/home/i2a/.conan/data/OpenSSL/ue4/adamrehn/4.26/package/fc43af07aec0611514d96529170ad6df016aa59c\"")
 
 libwebrtc_command(
     NAME webrtc-generate
     COMMAND ${_GEN_COMMAND}
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-    COMMENT "Generating build files"
-    STATUS "Generating build files with ${_GEN_COMMAND}"
+    COMMENT "Generating build files with [${_GEN_COMMAND}]"
+    STATUS "Generating build files with [${_GEN_COMMAND}]"
     DEPENDS ${_DEPENDENCIES}
 )
 
@@ -107,7 +124,7 @@ libwebrtc_command(
     NAME webrtc-build
     COMMAND ${_NINJA_COMMAND}
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-    COMMENT "Running ninja"
-    STATUS "Running ninja build ${_NINJA_COMMAND}"
+    COMMENT "Running ninja build [${_NINJA_COMMAND}]"
+    STATUS "Running ninja build [${_NINJA_COMMAND}]"
     DEPENDS webrtc-generate
 )

@@ -55,7 +55,8 @@ set(_WEBRTC_CMAKE_ARGS
     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
     -DCMAKE_MODULE_PATH:PATH=${CMAKE_MODULE_PATH}
     -DDEPOT_TOOLS_PATH:PATH=${DEPOT_TOOLS_PATH}
-    -DGCLIENT_EXECUTABLE:PATH=${GCLIENT_EXECUTABLE}
+    -DGCLIENT_EXECUTABLE=${GCLIENT_EXECUTABLE}
+    -DGN_EXTRA_ARGS=${GN_EXTRA_ARGS}
     -DFETCH_EXECUTABLE:PATH=${FETCH_EXECUTABLE}
     -DHAS_OWN_DEPOT_TOOLS:PATH=${HAS_OWN_DEPOT_TOOLS}
     -DTARGET_CPU=${TARGET_CPU}
@@ -74,7 +75,9 @@ ExternalProject_Add(
     webrtc-src
 
     DEPENDS ${_NEXT_DEPENDS}
-    DOWNLOAD_COMMAND  ${FETCH_EXECUTABLE} --nohooks webrtc # TODO: Need to fix - this clones in webrtc/src/src
+    #GIT_REPOSITORY https://chromium.googlesource.com/external/webrtc
+    #DOWNLOAD_COMMAND  ${FETCH_EXECUTABLE} --nohooks webrtc
+    DOWNLOAD_COMMAND cp -a /home/i2a/jj/mediasoupdocker/webrtc-checkout/src ${CMAKE_BINARY_DIR}/webrtc
 
     PREFIX ${CMAKE_BINARY_DIR}/webrtc
     BINARY_DIR ${CMAKE_BINARY_DIR}/webrtc/build
