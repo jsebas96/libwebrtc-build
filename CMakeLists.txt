@@ -76,8 +76,9 @@ ExternalProject_Add(
 
     DEPENDS ${_NEXT_DEPENDS}
     #GIT_REPOSITORY https://chromium.googlesource.com/external/webrtc
-    DOWNLOAD_COMMAND  cd .. && ${FETCH_EXECUTABLE} --nohooks webrtc
-    #DOWNLOAD_COMMAND cp -a /home/i2a/jj/mediasoupdocker/webrtc-checkout/src ${CMAKE_BINARY_DIR}/webrtc
+    #GIT_REPOSITORY https://webrtc.googlesource.com/src.git
+    #DOWNLOAD_COMMAND  ${FETCH_EXECUTABLE} --nohooks webrtc
+    DOWNLOAD_COMMAND cp -a /tmp/webrtc-checkout/src ${CMAKE_BINARY_DIR}/webrtc
 
     PREFIX ${CMAKE_BINARY_DIR}/webrtc
     BINARY_DIR ${CMAKE_BINARY_DIR}/webrtc/build
